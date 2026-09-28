@@ -20,6 +20,10 @@ List all matching capability options rather than only the top match:
 
     printf '%s\n' '{"query":"What can this language do with provenance and code generation?","declaration":"package jev\nactivity reverse_observe\nactivity generate_output\nproperty evidence_digest string\nproperty output string"}' | go run ./cmd/gooo-capability-options
 
+Measure the observed catalog surface without treating it as language completeness:
+
+    printf '%s\n' '{"query":"What can this language do with provenance and code generation?","declaration":"package jev\nactivity reverse_observe\nproperty evidence_digest string"}' | go run ./cmd/gooo-capability-coverage
+
 Build a deterministic next-use guide from the discovery and plan:
 
     printf '%s\n' '{"query":"What can this language do with provenance?","declaration":"package jev\nactivity reverse_observe\nproperty evidence_digest string"}' | go run ./cmd/gooo-capability-guide
@@ -28,4 +32,4 @@ The guide turns UNKNOWN into clarification, DEFERRED into missing declaration si
 
 Capability feedback is deliberately conservative. Missing or unverified evidence remains pending, and UNKNOWN or DEFERRED discovery is never promoted automatically. Only explicit verified evidence can become eligible for catalog review.
 
-The envelope, discovery, feedback, guide, and options packages never invoke a provider, issue an authorization grant, or treat cache presence as semantic evidence.
+The envelope, discovery, feedback, guide, options, and coverage packages never invoke a provider, issue an authorization grant, or treat cache presence as semantic evidence.

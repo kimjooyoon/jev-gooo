@@ -1,0 +1,16 @@
+package capability_coverage
+
+namespace jev_gooo_capability
+
+entity CapabilityCoverage
+property options_digest string
+property catalog_size integer
+property matched_count integer
+property available_count integer
+property deferred_count integer
+property unknown_query boolean
+property scope string
+property interpretation string
+property coverage_digest string
+
+activity measure_capability_coverage
