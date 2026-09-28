@@ -44,3 +44,9 @@ jobs:
           JSON
           grep -q '"guide"' "$RUNNER_TEMP/capability-assistant.json"
           grep -q '"evidence_digest":"' "$RUNNER_TEMP/capability-assistant.json"
+      - name: Exercise capability assistant file flags
+        shell: bash
+        run: |
+          go run ./cmd/gooo-capability-assistant --query "What can this language do?" --declaration examples/capability-discovery.gooo > "$RUNNER_TEMP/capability-assistant-file.json"
+          grep -q '"mode":"CATALOG_OVERVIEW"' "$RUNNER_TEMP/capability-assistant-file.json"
+          grep -q '"guide"' "$RUNNER_TEMP/capability-assistant-file.json"
