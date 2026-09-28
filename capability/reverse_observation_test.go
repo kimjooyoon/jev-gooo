@@ -1,14 +1,17 @@
 package capability
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func reverseObservationInput() ReverseObservationInput {
 	return ReverseObservationInput{
-		SourceDigest:            "sha256:source",
-		DeclarationDigest:       "sha256:declaration",
-		IRDigest:                "sha256:ir",
-		GeneratedArtifactDigest: "sha256:generated",
-		EvidencePrefixDigest:    "sha256:prefix",
+		SourceDigest:            strings.Repeat("1", 64),
+		DeclarationDigest:       strings.Repeat("2", 64),
+		IRDigest:                strings.Repeat("3", 64),
+		GeneratedArtifactDigest: strings.Repeat("4", 64),
+		EvidencePrefixDigest:    strings.Repeat("5", 64),
 	}
 }
 
@@ -26,7 +29,7 @@ func TestObserveReverseObservationBindsGeneratedArtifact(t *testing.T) {
 
 func TestObserveReverseObservationPreservesMismatch(t *testing.T) {
 	input := reverseObservationInput()
-	input.ObservedArtifactDigest = "sha256:different"
+	input.ObservedArtifactDigest = strings.Repeat("6", 64)
 	receipt := ObserveReverseObservation(input)
 	if receipt.Status != ReverseObservationMismatch || receipt.FirstMismatch != "reverse_observation" {
 		t.Fatalf("unexpected mismatch receipt: %+v", receipt)
