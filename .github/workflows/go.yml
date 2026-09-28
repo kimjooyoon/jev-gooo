@@ -50,3 +50,9 @@ jobs:
           go run ./cmd/gooo-capability-assistant --query "What can this language do?" --declaration examples/capability-discovery.gooo > "$RUNNER_TEMP/capability-assistant-file.json"
           grep -q '"mode":"CATALOG_OVERVIEW"' "$RUNNER_TEMP/capability-assistant-file.json"
           grep -q '"guide"' "$RUNNER_TEMP/capability-assistant-file.json"
+      - name: Exercise capability assistant batch command
+        shell: bash
+        run: |
+          go run ./cmd/gooo-capability-assistant-batch --query "What can this language do?" examples/capability-discovery.gooo examples/reverse-observation.gooo > "$RUNNER_TEMP/capability-assistant-batch.json"
+          test "$(grep -c '"path"' "$RUNNER_TEMP/capability-assistant-batch.json")" -eq 2
+          test "$(grep -c '"evidence_digest"' "$RUNNER_TEMP/capability-assistant-batch.json")" -ge 2
