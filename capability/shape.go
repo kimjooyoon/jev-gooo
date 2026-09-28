@@ -18,12 +18,12 @@ type EntityShape struct {
 }
 
 type DeclarationShape struct {
-	DeclarationDigest string        `json:"declaration_digest"`
-	Package          string        `json:"package"`
-	Namespace        string        `json:"namespace,omitempty"`
-	Entities         []EntityShape  `json:"entities"`
-	Activities       []string       `json:"activities"`
-	ShapeDigest      string        `json:"shape_digest"`
+	DeclarationDigest string       `json:"declaration_digest"`
+	Package          string       `json:"package"`
+	Namespace        string       `json:"namespace,omitempty"`
+	Entities         []EntityShape `json:"entities"`
+	Activities       []string      `json:"activities"`
+	ShapeDigest      string       `json:"shape_digest"`
 }
 
 func InspectDeclaration(source string) (DeclarationShape, error) {
@@ -37,8 +37,7 @@ func InspectDeclaration(source string) (DeclarationShape, error) {
 		Activities:        []string{},
 	}
 	currentEntity := -1
-	for lineNumber, raw := range strings.Split(source, "
-") {
+	for lineNumber, raw := range strings.Split(source, string([]byte{10})) {
 		line := strings.TrimSpace(raw)
 		if line == "" || strings.HasPrefix(line, "//") || strings.HasPrefix(line, "#") {
 			continue
