@@ -1,0 +1,13 @@
+{
+  "version": "self.improvement.iteration.v1",
+  "iteration_id": "capability-discovery-rejected-001",
+  "observation_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "candidate_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "verification_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "rollback_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "state": "REJECTED",
+  "next_operation": "retain_previous_iteration",
+  "non_executing": true,
+  "non_authorizing": true
+}
+
