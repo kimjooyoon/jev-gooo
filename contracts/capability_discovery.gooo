@@ -1,0 +1,21 @@
+package jev
+namespace capability_discovery
+
+entity CapabilityDescriptor
+property id string
+property label string
+property required_signals list<string>
+
+entity CapabilityDiscovery
+property query string
+property declaration_digest string
+property capability_id string
+property status string
+property matched_signals list<string>
+property missing_signals list<string>
+property next_questions list<string>
+property evidence_digest string
+
+activity discover_capability
+activity preserve_unknown
+activity ask_next_question
