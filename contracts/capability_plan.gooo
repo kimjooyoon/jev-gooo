@@ -1,0 +1,20 @@
+package jev
+namespace capability_plan
+
+entity PlanStep
+property id string
+property status string
+property missing_signal string
+property question string
+
+entity CapabilityPlan
+property discovery_digest string
+property status string
+property steps list<PlanStep>
+property plan_digest string
+
+activity build_plan
+activity ask_clarifying_question
+activity declare_missing_signal
+activity collect_verified_evidence
+activity review_feedback
