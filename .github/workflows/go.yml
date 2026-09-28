@@ -36,3 +36,11 @@ jobs:
           {"query":"gooo가 지원하는 기능은?","declaration":"package jev\u000aactivity discover_capability\u000aproperty evidence_digest string"}
           JSON
           grep -q '"mode":"CATALOG_OVERVIEW"' "$RUNNER_TEMP/capability-overview-ko.json"
+      - name: Exercise capability assistant command
+        shell: bash
+        run: |
+          go run ./cmd/gooo-capability-assistant > "$RUNNER_TEMP/capability-assistant.json" <<'JSON'
+          {"query":"What can this language do with provenance?","declaration":"package jev\u000aactivity reverse_observe\u000aproperty evidence_digest string"}
+          JSON
+          grep -q '"guide"' "$RUNNER_TEMP/capability-assistant.json"
+          grep -q '"evidence_digest":"' "$RUNNER_TEMP/capability-assistant.json"
