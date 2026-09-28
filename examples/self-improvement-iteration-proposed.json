@@ -1,0 +1,11 @@
+{
+  "version": "self.improvement.iteration.v1",
+  "iteration_id": "capability-discovery-next-operation-001",
+  "observation_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "candidate_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "state": "PROPOSED",
+  "next_operation": "provide_verification_evidence",
+  "non_executing": true,
+  "non_authorizing": true
+}
+
