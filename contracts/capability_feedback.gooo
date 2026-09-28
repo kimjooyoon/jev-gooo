@@ -1,0 +1,23 @@
+package jev
+namespace capability_feedback
+
+entity FeedbackInput
+property source string
+property evidence_digest string
+property verified bool
+
+entity CapabilityFeedback
+property discovery_digest string
+property discovery_status string
+property source_digest string
+property evidence_digest string
+property verified bool
+property disposition string
+property missing_stage string
+property feedback_digest string
+
+activity observe_feedback
+activity preserve_unknown
+activity preserve_deferred
+activity require_evidence
+activity review_catalog
