@@ -1,0 +1,16 @@
+package capability_guide
+
+namespace jev_gooo_capability
+
+entity CapabilityGuide
+property discovery_digest string
+property plan_digest string
+property status string
+property capability_id string
+property action string
+property missing_signals string
+property questions string
+property constraints string
+property guide_digest string
+
+activity build_capability_guide
