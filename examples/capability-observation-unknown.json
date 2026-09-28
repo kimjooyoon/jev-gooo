@@ -1,0 +1,8 @@
+{
+  "query": "What is the weather?",
+  "declaration": "package jev\nactivity discover_capability\nproperty evidence_digest string",
+  "correlation_id": "capability-example-unknown",
+  "catalog_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+  "schema_digest": "1111111111111111111111111111111111111111111111111111111111111111",
+  "first_missing_stage": 0
+}
