@@ -1,0 +1,30 @@
+package jev
+namespace execution_envelope
+
+entity CapabilityRequest
+property subject string
+property audience string
+property capability string
+property declaration_digest string
+
+entity WorkloadIdentityObservation
+property spiffe_id string
+
+entity DecisionReceipt
+property digest string
+property non_authorizing bool
+
+entity ExecutionReceipt
+property request_digest string
+property grant_digest string
+property identity_digest string
+property decision_receipt_digest string
+property result_digest string
+property terminal bool
+property status string
+property missing_stage string
+property evidence_digest string
+
+activity observe_execution
+activity preserve_unknown
+activity reverse_observe
