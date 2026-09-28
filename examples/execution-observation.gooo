@@ -1,0 +1,4 @@
+package jev
+activity execute_observe
+property receipt_digest string
+property execution_boundary string
