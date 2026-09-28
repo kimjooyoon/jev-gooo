@@ -1,0 +1,14 @@
+package capability_focus
+
+namespace jev_gooo_capability
+
+entity CapabilityFocusPlan
+property coverage_digest string
+property binding_digest string
+property scope string
+property decision string
+property next_action string
+property completeness_claimed boolean
+property plan_digest string
+
+activity build_capability_focus_plan
