@@ -1,0 +1,11 @@
+{
+  "schema_version": "capability.discovery.replay.v1",
+  "prior_evidence_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+  "observation_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+  "current_evidence_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+  "outcome": "UNRESOLVED",
+  "first_missing_stage": "external_boundary",
+  "next_operation": "provide_explicit_external_boundary",
+  "non_executing": true,
+  "non_authorizing": true
+}
