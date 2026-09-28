@@ -1,0 +1,27 @@
+module self_improvement_iteration
+
+input observation_receipt
+input candidate_change
+input verification_evidence
+input rollback_condition
+
+status PROPOSED
+status ACCEPTED
+status REJECTED
+status UNKNOWN
+
+field observation_receipt
+field candidate_change
+field verification_evidence
+field rollback_condition
+field first_missing_stage
+field next_operation
+
+constraint observation_only
+constraint no_execution
+constraint no_authorization
+constraint provenance_continuity
+constraint metric_not_truth
+constraint unknown_preserves_first_missing_stage
+constraint rollback_must_be_explicit
+
