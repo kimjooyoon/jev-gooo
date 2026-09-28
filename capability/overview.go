@@ -230,7 +230,7 @@ func overviewQuestions() []string {
 
 func isOverviewQuery(query string) bool {
 	query = strings.ToLower(strings.TrimSpace(query))
-	if strings.Contains(query, "what can this language do") || strings.Contains(query, "what can gooo do") || strings.Contains(query, "무엇을 할 수") {
+	if strings.Contains(query, "what can this language do") || strings.Contains(query, "what can gooo do") || strings.Contains(query, "무엇을 할 수") || strings.Contains(query, "지원하") || strings.Contains(query, "기능") || strings.Contains(query, "가능한") {
 		return !hasAnyTerm(termSet(query), "provenance", "evidence", "generate", "generation", "codegen", "reverse", "observation", "execute", "execution", "run", "lsp", "feedback")
 	}
 	terms := termSet(query)

@@ -82,3 +82,22 @@ property evidence_digest string`)
 		t.Fatal("expected tampered overview to fail validation")
 	}
 }
+
+func TestDiscoverOverviewRecognizesKoreanBroadQuestion(t *testing.T) {
+	declaration, err := envelope.BindDeclaration(`package jev
+activity discover_capability
+property evidence_digest string`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	overview, err := DiscoverOverview("gooo가 지원하는 기능은?", declaration)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := overview.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	if overview.Mode != OverviewCatalog {
+		t.Fatalf("overview = %#v", overview)
+	}
+}
