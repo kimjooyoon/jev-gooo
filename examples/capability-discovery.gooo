@@ -1,0 +1,3 @@
+package jev
+activity discover_capability
+property evidence_digest string
