@@ -27,6 +27,7 @@ type output struct {
 	Discovery   capability.Discovery                  `json:"discovery"`
 	Observation envelope.CapabilityObservationEnvelope `json:"observation"`
 	Report      envelope.CapabilityObservationReport
+	Investment envelope.CapabilityObservationInvestment
 	Request     *envelope.CapabilityRequest            `json:"request,omitempty"`
 }
 
@@ -96,6 +97,10 @@ func main() {
 	if err != nil {
 		fatal(err)
 	}
+	investment, err := report.BuildInvestment()
+	if err != nil {
+		fatal(err)
+	}
 
 	var capabilityRequest *envelope.CapabilityRequest
 	if strings.TrimSpace(request.RequestCapabilityID) != "" {
@@ -113,6 +118,7 @@ func main() {
 		Discovery:   discovery,
 		Observation: observation,
 		Report: report,
+		Investment: investment,
 		Request:     capabilityRequest,
 	}); err != nil {
 		fatal(err)
