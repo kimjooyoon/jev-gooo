@@ -38,7 +38,7 @@ func TestAnalyzeSourcePreservesUnknownPlan(t *testing.T) {
 }
 
 func TestAnalyzeSourceRejectsTampering(t *testing.T) {
-	analysis, err := AnalyzeSource("What can this language do?", "package jev\nactivity discover_capability\nproperty evidence_digest string")
+	analysis, err := AnalyzeSource("What can this language do?", "package jev\nentity Evidence\nproperty evidence_digest string\nactivity discover_capability")
 	if err != nil {
 		t.Fatal(err)
 	}
