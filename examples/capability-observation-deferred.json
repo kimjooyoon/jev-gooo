@@ -1,0 +1,8 @@
+{
+  "query": "What can this language do with provenance?",
+  "declaration": "package jev\nactivity discover_capability",
+  "correlation_id": "capability-example-deferred",
+  "catalog_digest": "0000000000000000000000000000000000000000000000000000000000000000",
+  "schema_digest": "1111111111111111111111111111111111111111111111111111111111111111",
+  "first_missing_stage": 1
+}
