@@ -56,6 +56,7 @@ func DiscoverOverview(query string, declaration envelope.Declaration) (Overview,
 	if err != nil {
 		return Overview{}, err
 	}
+	options.Options = scopedOverviewOptions(options.Options)
 	matchedSignals := declarationSignals(declaration.Source)
 	result := Overview{
 		Query:             query,
@@ -234,4 +235,18 @@ func isOverviewQuery(query string) bool {
 	}
 	terms := termSet(query)
 	return hasAnyTerm(terms, "가능", "지원", "기능") && !hasAnyTerm(terms, "provenance", "evidence", "generate", "generation", "codegen", "reverse", "observation", "execute", "execution", "run", "lsp", "feedback")
+}
+
+func scopedOverviewOptions(options []Option) []Option {
+	if len(options) <= 1 {
+		return options
+	}
+	result := make([]Option, 0, len(options))
+	for _, option := range options {
+		if option.ID == "capability-discovery" {
+			continue
+		}
+		result = append(result, option)
+	}
+	return result
 }
