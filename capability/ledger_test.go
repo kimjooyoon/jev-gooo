@@ -1,10 +1,15 @@
 package capability
 
-import "testing"
+import (
+	"strings"
+	"testing"
+
+	"github.com/kimjooyoon/jev-gooo/envelope"
+)
 
 func TestBuildImprovementLedgerPreservesUnknownBoundary(t *testing.T) {
-	coverage, feedback, plan := buildLedgerFixture(t, CoverageFeedbackPreserveUnknown)
-	ledger, err := BuildImprovementLedger(coverage, feedback, plan)
+	coverage, binding, plan := buildLedgerFixture(t, DispositionPreserveUnknown)
+	ledger, err := BuildImprovementLedger(coverage, binding, plan)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -17,8 +22,8 @@ func TestBuildImprovementLedgerPreservesUnknownBoundary(t *testing.T) {
 }
 
 func TestBuildImprovementLedgerPreservesReviewBoundary(t *testing.T) {
-	coverage, feedback, plan := buildLedgerFixture(t, CoverageFeedbackEligibleForCatalogReview)
-	ledger, err := BuildImprovementLedger(coverage, feedback, plan)
+	coverage, binding, plan := buildLedgerFixture(t, DispositionEligibleForCatalogReview)
+	ledger, err := BuildImprovementLedger(coverage, binding, plan)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,16 +36,16 @@ func TestBuildImprovementLedgerPreservesReviewBoundary(t *testing.T) {
 }
 
 func TestBuildImprovementLedgerRejectsMismatchedPlan(t *testing.T) {
-	coverage, feedback, plan := buildLedgerFixture(t, CoverageFeedbackPreserveDeferred)
+	coverage, binding, plan := buildLedgerFixture(t, DispositionPreserveDeferred)
 	plan.BindingDigest = "0000000000000000000000000000000000000000000000000000000000000000"
-	if _, err := BuildImprovementLedger(coverage, feedback, plan); err == nil {
+	if _, err := BuildImprovementLedger(coverage, binding, plan); err == nil {
 		t.Fatal("expected mismatched plan to fail")
 	}
 }
 
 func TestImprovementLedgerRejectsCompletenessClaim(t *testing.T) {
-	coverage, feedback, plan := buildLedgerFixture(t, CoverageFeedbackPreserveUnknown)
-	ledger, err := BuildImprovementLedger(coverage, feedback, plan)
+	coverage, binding, plan := buildLedgerFixture(t, DispositionPreserveUnknown)
+	ledger, err := BuildImprovementLedger(coverage, binding, plan)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -52,7 +57,25 @@ func TestImprovementLedgerRejectsCompletenessClaim(t *testing.T) {
 
 func buildLedgerFixture(t *testing.T, disposition FeedbackDisposition) (Coverage, CoverageFeedback, FocusPlan) {
 	t.Helper()
-	options, err := DiscoverOptions("reverse observation provenance", declarationForLedger())
+	lineBreak := string([]byte{10})
+	query := "reverse observation provenance"
+	source := strings.Join([]string{"package jev", "activity reverse_observe", "property evidence_digest string"}, lineBreak)
+	switch disposition {
+	case DispositionPreserveUnknown:
+		query = "database migration"
+		source = "package jev"
+	case DispositionPreserveDeferred:
+		source = strings.Join([]string{"package jev", "activity reverse_observe"}, lineBreak)
+	}
+	declaration, err := envelope.BindDeclaration(source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	discovery, err := Discover(query, declaration)
+	if err != nil {
+		t.Fatal(err)
+	}
+	options, err := DiscoverOptions(query, declaration)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,9 +83,14 @@ func buildLedgerFixture(t *testing.T, disposition FeedbackDisposition) (Coverage
 	if err != nil {
 		t.Fatal(err)
 	}
-	feedback, err := BuildFeedback(disposition)
-	if err != nil {
-		t.Fatal(err)
+	input := FeedbackInput{
+		Source:         "verified receipt",
+		EvidenceDigest: strings.Repeat("0", 64),
+		Verified:       disposition == DispositionEligibleForCatalogReview,
+	}
+	feedback := ObserveFeedback(discovery, input)
+	if feedback.Disposition != disposition {
+		t.Fatalf("feedback disposition = %q, want %q", feedback.Disposition, disposition)
 	}
 	binding, err := BindCoverageFeedback(coverage, feedback)
 	if err != nil {
