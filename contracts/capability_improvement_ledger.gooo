@@ -1,0 +1,20 @@
+package capability_improvement_ledger
+
+contract CapabilityImprovementLedger {
+  input coverage_digest string
+  input binding_digest string
+  input plan_digest string
+  input source_digest string
+  output feedback_status string
+  output decision string
+  output next_action string
+  output investment_class string
+  output observed_counts map
+  output evidence_digest string
+  output ledger_digest string
+  invariant completeness_claimed_false
+  invariant catalog_scope_only
+  invariant no_catalog_mutation
+  invariant no_provider_invocation
+  invariant no_authorization_grant
+}

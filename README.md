@@ -70,3 +70,9 @@ The guide turns UNKNOWN into clarification, DEFERRED into missing declaration si
 Capability feedback is deliberately conservative. Missing or unverified evidence remains pending, and UNKNOWN or DEFERRED discovery is never promoted automatically. Only explicit verified evidence can become eligible for catalog review.
 
 The envelope, discovery, feedback, guide, options, coverage, binding, and focus packages never invoke a provider, issue an authorization grant, or treat cache presence as semantic evidence.
+
+Build a provenance-bound improvement ledger from coverage, feedback binding, and focus plan JSON:
+
+    go run ./cmd/gooo-capability-improvement-ledger < ledger-input.json
+
+The ledger records observed scope, counts, evidence identities, status, next action, and bounded investment class. It always sets completeness_claimed to false and never treats catalog coverage or cache presence as language completeness.
