@@ -1,0 +1,18 @@
+package capability_feedback_binding
+
+namespace jev_gooo_capability
+
+entity CapabilityCoverageFeedback
+property coverage_digest string
+property feedback_digest string
+property source_digest string
+property feedback_disposition string
+property coverage_matched_count integer
+property coverage_available_count integer
+property coverage_deferred_count integer
+property status string
+property missing_stage string
+property evidence_digest string
+property binding_digest string
+
+activity bind_coverage_feedback

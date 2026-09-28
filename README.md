@@ -24,6 +24,10 @@ Measure the observed catalog surface without treating it as language completenes
 
     printf '%s\n' '{"query":"What can this language do with provenance and code generation?","declaration":"package jev\nactivity reverse_observe\nproperty evidence_digest string"}' | go run ./cmd/gooo-capability-coverage
 
+Bind coverage and explicit feedback into a review-safe handoff:
+
+    printf '%s\n' '{"query":"reverse observation provenance","declaration":"package jev\nactivity reverse_observe\nproperty evidence_digest string","source":"verified receipt","evidence_digest":"0000000000000000000000000000000000000000000000000000000000000000","verified":true}' | go run ./cmd/gooo-capability-feedback-binding
+
 Build a deterministic next-use guide from the discovery and plan:
 
     printf '%s\n' '{"query":"What can this language do with provenance?","declaration":"package jev\nactivity reverse_observe\nproperty evidence_digest string"}' | go run ./cmd/gooo-capability-guide
@@ -32,4 +36,4 @@ The guide turns UNKNOWN into clarification, DEFERRED into missing declaration si
 
 Capability feedback is deliberately conservative. Missing or unverified evidence remains pending, and UNKNOWN or DEFERRED discovery is never promoted automatically. Only explicit verified evidence can become eligible for catalog review.
 
-The envelope, discovery, feedback, guide, options, and coverage packages never invoke a provider, issue an authorization grant, or treat cache presence as semantic evidence.
+The envelope, discovery, feedback, guide, options, coverage, and binding packages never invoke a provider, issue an authorization grant, or treat cache presence as semantic evidence.
