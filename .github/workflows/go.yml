@@ -56,3 +56,9 @@ jobs:
           go run ./cmd/gooo-capability-assistant-batch --query "What can this language do?" examples/capability-discovery.gooo examples/reverse-observation.gooo > "$RUNNER_TEMP/capability-assistant-batch.json"
           test "$(grep -c '"path"' "$RUNNER_TEMP/capability-assistant-batch.json")" -eq 2
           test "$(grep -c '"evidence_digest"' "$RUNNER_TEMP/capability-assistant-batch.json")" -ge 2
+      - name: Exercise capability observation report
+        shell: bash
+        run: |
+          go run ./cmd/gooo-capability-report --query "What can this language do?" examples/capability-discovery.gooo examples/reverse-observation.gooo > "$RUNNER_TEMP/capability-report.json"
+          grep -q '"total": 2' "$RUNNER_TEMP/capability-report.json"
+          grep -q '"not_a_language_completeness_claim"' "$RUNNER_TEMP/capability-report.json"
