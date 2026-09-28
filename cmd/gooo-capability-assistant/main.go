@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -16,16 +17,38 @@ type input struct {
 }
 
 func main() {
+	query := flag.String("query", "", "natural-language capability question")
+	declarationPath := flag.String("declaration", "", "path to a .gooo declaration")
+	flag.Parse()
+
+	if *query != "" || *declarationPath != "" {
+		if *query == "" || *declarationPath == "" {
+			fatal(fmt.Errorf("--query and --declaration must be provided together"))
+		}
+		source, err := os.ReadFile(*declarationPath)
+		if err != nil {
+			fatal(err)
+		}
+		declaration, err := envelope.BindDeclaration(string(source))
+		if err != nil {
+			fatal(err)
+		}
+		emit(*query, declaration)
+		return
+	}
+
 	var reader io.Reader = os.Stdin
-	if len(os.Args) > 1 {
-		file, err := os.Open(os.Args[1])
+	if len(flag.Args()) > 1 {
+		fatal(fmt.Errorf("at most one JSON input path is supported"))
+	}
+	if len(flag.Args()) == 1 {
+		file, err := os.Open(flag.Args()[0])
 		if err != nil {
 			fatal(err)
 		}
 		defer file.Close()
 		reader = file
 	}
-
 	var request input
 	if err := json.NewDecoder(reader).Decode(&request); err != nil {
 		fatal(err)
@@ -34,7 +57,11 @@ func main() {
 	if err != nil {
 		fatal(err)
 	}
-	assistant, err := capability.DiscoverAssistant(request.Query, declaration)
+	emit(request.Query, declaration)
+}
+
+func emit(query string, declaration envelope.Declaration) {
+	assistant, err := capability.DiscoverAssistant(query, declaration)
 	if err != nil {
 		fatal(err)
 	}
