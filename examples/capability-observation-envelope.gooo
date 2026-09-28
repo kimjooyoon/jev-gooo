@@ -1,0 +1,19 @@
+package jev
+
+activity observe_capability
+activity request_capability
+
+property source_digest string
+property declaration_digest string
+property catalog_digest string
+property schema_digest string
+property evidence_digest string
+property correlation_id string
+property first_missing_stage int
+property next_operation string
+
+constraint no_execution
+constraint no_authorization
+constraint available_observation_only_becomes_request_shaped
+constraint preserve_unknown
+constraint explicit_first_missing_stage
