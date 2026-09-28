@@ -1,0 +1,4 @@
+package jev
+activity lsp_feedback
+property feedback_source string
+property diagnostic string
