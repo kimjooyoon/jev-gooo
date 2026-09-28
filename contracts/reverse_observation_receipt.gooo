@@ -1,0 +1,26 @@
+package reverse_observation_receipt
+
+namespace jev_gooo_capability
+
+entity ReverseObservationReceipt
+property status string
+property source_digest string
+property declaration_digest string
+property ir_digest string
+property generated_artifact_digest string
+property observed_artifact_digest string
+property evidence_prefix_digest string
+property observed_stage string
+property first_mismatch string
+property missing_stage string
+property read_only bool
+property receipt_digest string
+
+activity observe_generated_artifact
+
+invariant source_generation_reverse_chain
+invariant prefix_evidence_is_immutable
+invariant mismatch_is_not_success
+invariant unknown_preserves_first_boundary
+invariant no_provider_invocation
+invariant no_authorization_grant
