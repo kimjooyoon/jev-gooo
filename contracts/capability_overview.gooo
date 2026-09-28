@@ -1,0 +1,17 @@
+package capability_overview
+
+contract CapabilityOverview {
+  input query string
+  input declaration_digest string
+  output mode string
+  output capabilities list
+  output suggested_questions list
+  output constraints list
+  output evidence_digest string
+  invariant catalog_scope_only
+  invariant not_a_language_completeness_claim
+  invariant no_provider_invocation
+  invariant no_authorization_grant
+  invariant no_catalog_mutation
+  invariant cache_presence_is_not_semantic_evidence
+}
