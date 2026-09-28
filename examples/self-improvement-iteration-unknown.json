@@ -1,0 +1,12 @@
+{
+  "version": "self.improvement.iteration.v1",
+  "iteration_id": "capability-discovery-unknown-001",
+  "observation_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "candidate_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "state": "UNKNOWN",
+  "first_missing_stage": "verification_boundary",
+  "next_operation": "provide_verification_evidence",
+  "non_executing": true,
+  "non_authorizing": true
+}
+
