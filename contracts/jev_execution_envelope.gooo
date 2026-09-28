@@ -1,6 +1,9 @@
 package jev
 namespace execution_envelope
 
+entity DeclarationBinding
+property source_digest string
+
 entity CapabilityRequest
 property subject string
 property audience string
@@ -25,6 +28,15 @@ property status string
 property missing_stage string
 property evidence_digest string
 
+entity ReverseObservation
+property execution_digest string
+property observed_result_digest string
+property verifier_digest string
+property status string
+property missing_stage string
+property evidence_digest string
+
+activity bind_declaration
 activity observe_execution
 activity preserve_unknown
 activity reverse_observe

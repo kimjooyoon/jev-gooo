@@ -14,13 +14,45 @@ type Status string
 const (
 	StatusUnknown   Status = "UNKNOWN"
 	StatusCompleted Status = "COMPLETED"
+	StatusObserved  Status = "OBSERVED"
 )
+
+type Declaration struct {
+	Source string
+	Digest string
+}
+
+func BindDeclaration(source string) (Declaration, error) {
+	if strings.TrimSpace(source) == "" {
+		return Declaration{}, fmt.Errorf("gooo declaration source is required")
+	}
+	declaration := Declaration{Source: source, Digest: digest("gooo-declaration", source)}
+	return declaration, declaration.Validate()
+}
+
+func (d Declaration) Validate() error {
+	if strings.TrimSpace(d.Source) == "" || !validDigest(d.Digest) {
+		return fmt.Errorf("gooo declaration binding is incomplete")
+	}
+	if digest("gooo-declaration", d.Source) != d.Digest {
+		return fmt.Errorf("gooo declaration digest does not match source")
+	}
+	return nil
+}
 
 type CapabilityRequest struct {
 	Subject           string
 	Audience          string
 	Capability        string
 	DeclarationDigest string
+}
+
+func NewCapabilityRequest(declaration Declaration, subject, audience, capability string) (CapabilityRequest, error) {
+	if err := declaration.Validate(); err != nil {
+		return CapabilityRequest{}, err
+	}
+	request := CapabilityRequest{Subject: subject, Audience: audience, Capability: capability, DeclarationDigest: declaration.Digest}
+	return request, request.Validate()
 }
 
 func (r CapabilityRequest) Validate() error {
@@ -53,20 +85,20 @@ func (i WorkloadIdentity) Digest() string {
 }
 
 type DecisionReceipt struct {
-	Digest          string
-	NonAuthorizing  bool
+	Digest         string
+	NonAuthorizing bool
 }
 
 type ExecutionReceipt struct {
-	RequestDigest       string
-	GrantDigest         string
-	IdentityDigest      string
+	RequestDigest         string
+	GrantDigest           string
+	IdentityDigest        string
 	DecisionReceiptDigest string
-	ResultDigest        string
-	Terminal            bool
-	Status              Status
-	MissingStage        string
-	Digest              string
+	ResultDigest          string
+	Terminal              bool
+	Status                Status
+	MissingStage          string
+	Digest                string
 }
 
 // NewExecutionReceipt observes evidence only. It never executes a capability,
@@ -86,13 +118,13 @@ func NewExecutionReceipt(request CapabilityRequest, grantDigest string, identity
 	}
 
 	receipt := ExecutionReceipt{
-		RequestDigest:        request.Digest(),
-		GrantDigest:          grantDigest,
-		IdentityDigest:       identity.Digest(),
+		RequestDigest:         request.Digest(),
+		GrantDigest:           grantDigest,
+		IdentityDigest:        identity.Digest(),
 		DecisionReceiptDigest: decision.Digest,
-		ResultDigest:         resultDigest,
-		Terminal:             terminal,
-		Status:               StatusUnknown,
+		ResultDigest:          resultDigest,
+		Terminal:              terminal,
+		Status:                StatusUnknown,
 	}
 	switch {
 	case grantDigest == "":
@@ -133,6 +165,63 @@ func (r ExecutionReceipt) Validate() error {
 
 func (r ExecutionReceipt) digest() string {
 	return digest("execution-receipt", r.RequestDigest, r.GrantDigest, r.IdentityDigest, r.DecisionReceiptDigest, r.ResultDigest, fmt.Sprintf("%t", r.Terminal), string(r.Status), r.MissingStage)
+}
+
+type ReverseObservation struct {
+	ExecutionDigest      string
+	ObservedResultDigest  string
+	VerifierDigest       string
+	Status               Status
+	MissingStage         string
+	Digest               string
+}
+
+// ObserveReverse records an external reverse observation without executing,
+// mutating source, or promoting an incomplete receipt.
+func ObserveReverse(receipt ExecutionReceipt, observedResultDigest, verifierDigest string) ReverseObservation {
+	observation := ReverseObservation{
+		ExecutionDigest:     receipt.Digest,
+		ObservedResultDigest: observedResultDigest,
+		VerifierDigest:      verifierDigest,
+		Status:              StatusUnknown,
+	}
+	switch {
+	case receipt.Validate() != nil:
+		observation.MissingStage = "execution_receipt"
+	case receipt.Status != StatusCompleted:
+		observation.MissingStage = "execution_receipt:" + receipt.MissingStage
+	case !validDigest(observedResultDigest):
+		observation.MissingStage = "observed_result"
+	case !validDigest(verifierDigest):
+		observation.MissingStage = "verifier"
+	default:
+		observation.Status = StatusObserved
+	}
+	observation.Digest = observation.digest()
+	return observation
+}
+
+func (o ReverseObservation) Validate() error {
+	if !validDigest(o.ExecutionDigest) || !validDigest(o.Digest) {
+		return fmt.Errorf("reverse observation digest is invalid")
+	}
+	if o.Status != StatusUnknown && o.Status != StatusObserved {
+		return fmt.Errorf("reverse observation status %q is invalid", o.Status)
+	}
+	if o.Status == StatusUnknown && strings.TrimSpace(o.MissingStage) == "" {
+		return fmt.Errorf("unknown reverse observation must preserve missing stage")
+	}
+	if o.Status == StatusObserved && (o.MissingStage != "" || !validDigest(o.ObservedResultDigest) || !validDigest(o.VerifierDigest)) {
+		return fmt.Errorf("observed reverse observation is incomplete")
+	}
+	if o.digest() != o.Digest {
+		return fmt.Errorf("reverse observation digest does not match")
+	}
+	return nil
+}
+
+func (o ReverseObservation) digest() string {
+	return digest("reverse-observation", o.ExecutionDigest, o.ObservedResultDigest, o.VerifierDigest, string(o.Status), o.MissingStage)
 }
 
 func digest(parts ...string) string {
