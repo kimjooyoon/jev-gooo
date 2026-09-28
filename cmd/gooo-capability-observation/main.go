@@ -26,6 +26,7 @@ type input struct {
 type output struct {
 	Discovery   capability.Discovery                  `json:"discovery"`
 	Observation envelope.CapabilityObservationEnvelope `json:"observation"`
+	Report      envelope.CapabilityObservationReport
 	Request     *envelope.CapabilityRequest            `json:"request,omitempty"`
 }
 
@@ -91,6 +92,11 @@ func main() {
 		fatal(err)
 	}
 
+	report, err := observation.Report()
+	if err != nil {
+		fatal(err)
+	}
+
 	var capabilityRequest *envelope.CapabilityRequest
 	if strings.TrimSpace(request.RequestCapabilityID) != "" {
 		if discovery.Status != capability.StatusAvailable {
@@ -106,6 +112,7 @@ func main() {
 	if err := json.NewEncoder(os.Stdout).Encode(output{
 		Discovery:   discovery,
 		Observation: observation,
+		Report: report,
 		Request:     capabilityRequest,
 	}); err != nil {
 		fatal(err)
