@@ -1,0 +1,15 @@
+package jev
+namespace capability_review
+
+entity ReviewCandidate
+property feedback_digest string
+property capability_id string
+property rationale_digest string
+property rationale_present bool
+property status string
+property missing_stage string
+property candidate_digest string
+
+activity preserve_review_candidate
+activity require_review_proposal
+activity propose_capability
