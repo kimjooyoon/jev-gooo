@@ -22,6 +22,23 @@ jobs:
         shell: bash
         run: |
           go run ./cmd/gooo-capability-focus > "$RUNNER_TEMP/capability-focus.json" <<'JSON'
-          {"query":"reverse observation provenance","declaration":"package jev\nactivity reverse_observe\nproperty evidence_digest string","source":"verified receipt","evidence_digest":"0000000000000000000000000000000000000000000000000000000000000000","verified":true}
+          {"query":"reverse observation provenance","declaration":"package jev
+activity reverse_observe
+property evidence_digest string","source":"verified receipt","evidence_digest":"0000000000000000000000000000000000000000000000000000000000000000","verified":true}
           JSON
           test -s "$RUNNER_TEMP/capability-focus.json"
+      - name: Exercise capability overview command
+        shell: bash
+        run: |
+          go run ./cmd/gooo-capability-overview > "$RUNNER_TEMP/capability-overview-en.json" <<'JSON'
+          {"query":"What can this language do?","declaration":"package jev
+activity discover_capability
+property evidence_digest string"}
+          JSON
+          grep -q '"mode":"CATALOG_OVERVIEW"' "$RUNNER_TEMP/capability-overview-en.json"
+          go run ./cmd/gooo-capability-overview > "$RUNNER_TEMP/capability-overview-ko.json" <<'JSON'
+          {"query":"gooo가 지원하는 기능은?","declaration":"package jev
+activity discover_capability
+property evidence_digest string"}
+          JSON
+          grep -q '"mode":"CATALOG_OVERVIEW"' "$RUNNER_TEMP/capability-overview-ko.json"
