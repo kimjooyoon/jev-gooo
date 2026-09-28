@@ -1,0 +1,12 @@
+package jev
+namespace source_analysis
+
+entity SourceAnalysis
+property declaration_shape_digest string
+property discovery_digest string
+property plan_digest string
+property analysis_digest string
+
+activity analyze_source
+activity preserve_analysis_unknown
+activity preserve_analysis_deferred
