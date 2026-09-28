@@ -4,7 +4,11 @@ The gooo-capability-assistant command combines the existing overview,
 discovery, plan, and guide stages for one natural-language question and one
 .gooo declaration.
 
-Run it with:
+For direct use with a declaration file:
+
+    go run ./cmd/gooo-capability-assistant --query "What can this language do?" --declaration examples/capability-discovery.gooo
+
+The JSON input form remains available when a caller already has an envelope:
 
     printf '%s
 ' '{"query":"What can this language do with provenance?","declaration":"package jev
