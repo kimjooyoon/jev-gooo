@@ -1,0 +1,4 @@
+package jev
+activity generate_implementation
+property output_digest string
+property generator_identity string
