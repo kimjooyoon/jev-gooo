@@ -1,0 +1,19 @@
+package capability_options
+
+namespace jev_gooo_capability
+
+entity CapabilityOption
+property id string
+property label string
+property score integer
+property status string
+property required_signals string
+property missing_signals string
+
+entity CapabilityOptions
+property query string
+property declaration_digest string
+property options string
+property evidence_digest string
+
+activity discover_capability_options
