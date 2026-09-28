@@ -8,9 +8,9 @@ import (
 )
 
 func TestDiscoverOverviewExpandsBroadQuestion(t *testing.T) {
-	declaration, err := envelope.BindDeclaration("package jev
+	declaration, err := envelope.BindDeclaration(`package jev
 activity discover_capability
-property evidence_digest string")
+property evidence_digest string`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,9 +30,9 @@ property evidence_digest string")
 }
 
 func TestDiscoverOverviewKeepsMatchedQuestionNarrow(t *testing.T) {
-	declaration, err := envelope.BindDeclaration("package jev
+	declaration, err := envelope.BindDeclaration(`package jev
 activity reverse_observe
-property evidence_digest string")
+property evidence_digest string`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -49,8 +49,8 @@ property evidence_digest string")
 }
 
 func TestDiscoverOverviewRequiresNarrowerQuestion(t *testing.T) {
-	declaration, err := envelope.BindDeclaration("package jev
-activity unrelated")
+	declaration, err := envelope.BindDeclaration(`package jev
+activity unrelated`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,9 +67,9 @@ activity unrelated")
 }
 
 func TestDiscoverOverviewRejectsTampering(t *testing.T) {
-	declaration, err := envelope.BindDeclaration("package jev
+	declaration, err := envelope.BindDeclaration(`package jev
 activity discover_capability
-property evidence_digest string")
+property evidence_digest string`)
 	if err != nil {
 		t.Fatal(err)
 	}
