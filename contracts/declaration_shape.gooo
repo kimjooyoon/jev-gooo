@@ -1,0 +1,21 @@
+package jev
+namespace declaration_shape
+
+entity PropertyShape
+property name string
+property type string
+
+entity EntityShape
+property name string
+property properties list<PropertyShape>
+
+entity DeclarationShape
+property declaration_digest string
+property package string
+property namespace string
+property entities list<EntityShape>
+property activities list<string>
+property shape_digest string
+
+activity inspect_declaration
+activity preserve_shape
