@@ -70,7 +70,7 @@ func TestBindCoverageFeedbackRejectsTampering(t *testing.T) {
 	coverage, feedback := availableCoverageFeedbackInputs(t)
 	binding, err := BindCoverageFeedback(coverage, feedback)
 	if err != nil { t.Fatal(err) }
-	binding.Status = CoverageFeedbackEligibleForCatalogReview
+	binding.CoverageMatchedCount++
 	if err := binding.Validate(); err == nil {
 		t.Fatal("expected tampered binding to fail validation")
 	}
